@@ -6,7 +6,7 @@
 int main(){
 	srand(clock());
 
-	int size = 100000000;
+	int size = 10000000;
 	int* array_raw = Array_Init_Random(size);
 	int* array_sort = Array_Init_Empty(size);
 

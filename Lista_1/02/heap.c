@@ -30,22 +30,25 @@ void Heap_Print(_heap* heap){
 	printf("\n\n");
 }
 
-void Heap_Reheap_Up(_heap* heap, int position){
-	int parent_node = (position - 1)/2;
-	if(parent_node == 0){
-		return;
+void Heap_Reheap_Up(_heap* heap, int index_position){
+	int parent_node = 0;
+	if(index_position == 0){
+			return;
 	}
-	else if(heap->array[position] <= heap->array[parent_node]){
+
+	parent_node = ((index_position + 1)/2) - 1;
+	
+	if(heap->array[index_position] <= heap->array[parent_node]){
 		return;
 	}
 	else{
-		Swap(&heap->array[position], &heap->array[parent_node]);
+		Swap(&heap->array[index_position], &heap->array[parent_node]);
 		Heap_Reheap_Up(heap, parent_node);
 	}
 }
 
 void Heap_Reheap_Down(_heap* heap, int parent_node){
-int largest = parent_node;
+	int largest = parent_node;
 	int left_child = parent_node * 2 + 1;
 	int right_child = parent_node * 2 + 2;
 
@@ -68,12 +71,18 @@ int largest = parent_node;
 }
 
 void Heap_Heapify(_heap* heap){
-	for(int i = heap->size - 1; i > 0; i--){
-		Heap_Reheap_Up(heap, i);
+	for(int i = heap->size; i > 0; i--){
+		Heap_Reheap_Up(heap, i - 1);
 	}
 }
 
-void Heap_Insert(_heap* heap, int num){
+void Heap_Insert(_heapQueue* heapQueue, int num){
+	_heap* heap = heapQueue->heap;
+
+	if(heap->size >= heapQueue->size){
+		printf("Heap is full!\n");
+		return;
+	}
 	if(heap->size == 0){
 		heap->size++;
 		heap->array[0] = num;
@@ -82,17 +91,49 @@ void Heap_Insert(_heap* heap, int num){
 	heap->size++;
 	heap->array = (int*)realloc(heap->array, heap->size * sizeof(int));
 	heap->array[heap->size - 1] = num;
-	Heap_Reheap_Up(heap, heap->size - 1);
+	Heap_Heapify(heap);
 }
 
-void Heap_Priority_Queue(_heapQueue* heapQueue){
-	int queue_size = heapQueue->size;
-	int heap_size = heapQueue->heap->size;
+void Heap_Remove(_heapQueue* heapQueue){
+	_heap* heap = heapQueue->heap;
 
-	if(heap_size >= queue_size){
-		printf("Queue is full!\n");
+	if(heap->size == 1){
+		heap->array[0] == 0;
+		heap->size--;
 		return;
 	}
 
-	Heap_Insert(heapQueue->heap, queue_size - heap_size);
+	Swap(&heap->array[0], &heap->array[heap->size - 1]);
+	heap->size--;
+	heap->array = (int*)realloc(heap->array, heap->size * sizeof(int));
+
+	Heap_Reheap_Down(heap, 0);
 }
+
+int Key_Gen(){
+	int priority = (rand() % 3) + 1;
+	static int position_queue[3] = {999, 999, 999}; //Ordem de chegada. 999 chega primeiro, depois 998, 997...
+	int key = 0;
+
+	key = priority * 1000 + position_queue[priority - 1];
+
+	if(position_queue[priority - 1] != 0){
+		position_queue[priority - 1]--;
+		return key;
+	}
+	else{
+		return 0;
+	}
+}
+
+void Priority_Heap_Insert(_heapQueue* heapQueue){
+	int key = Key_Gen();
+
+	Heap_Insert(heapQueue, key);
+}
+
+void Priority_Heap_Remove(_heapQueue* heapQueue){
+	Heap_Remove(heapQueue);
+}
+
+

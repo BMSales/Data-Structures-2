@@ -1,11 +1,18 @@
+#include <stdlib.h>
+#include <time.h>
 #include "heap.h"
 
 int main(){
-	_heapQueue* queue = Heap_Queue_Init(100);
+	srand(clock());
+	_heapQueue* queue = Heap_Queue_Init(7);
 
 	for(int i = 0; i < queue->size; i++){
-		Heap_Priority_Queue(queue);
+		Priority_Heap_Insert(queue);
 	}
+
+	Heap_Print(queue->heap);
+
+	Priority_Heap_Remove(queue);
 
 	Heap_Print(queue->heap);
 }

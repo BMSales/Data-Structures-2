@@ -6,13 +6,14 @@ typedef struct {
 }_heap;
 
 typedef struct {
-	int size;
+	int size; //limite de tamanho da heap
 	_heap* heap;
 }_heapQueue;
 
 _heap* Heap_Init();
-void Heap_Insert(_heap* heap, int num);
+void Heap_Insert(_heapQueue* heap, int num);
 void Heap_Print(_heap* heap);
 
 _heapQueue* Heap_Queue_Init(int size);
-void Heap_Priority_Queue(_heapQueue* heap);
+void Priority_Heap_Insert(_heapQueue* heap);
+void Priority_Heap_Remove(_heapQueue* heap);
