@@ -16,4 +16,6 @@ _redBlackTree* RedBlackTree_Init();
 void RedBlack_Insert(_redBlackTree* tree, int data);
 void RedBlack_Traversal_Inorder(_nodeRedBlack* node);
 void RedBlack_Delete(_redBlackTree* tree);
+
 int Height_Calculate(_nodeRedBlack* node);
+int Height_Return(_redBlackTree* tree);

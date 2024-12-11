@@ -126,6 +126,8 @@ void RedBlack_Delete(_redBlackTree* tree){
     free(tree);
 }
 
+
+
 int Height_Calculate(_nodeRedBlack* node) {
 	if(node == NULL){
 		return -1;
@@ -138,3 +140,10 @@ int Height_Calculate(_nodeRedBlack* node) {
 	return node->height;
 }
 
+int Height_Return(_redBlackTree* tree){
+    if(tree->root == NULL){
+        return -1;
+    }
+
+    return tree->root->height;
+}
